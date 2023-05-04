@@ -28,18 +28,22 @@ fruits_to_show = my_fruit_list.loc[fruits_selected]
 # Display the table on the page.
 streamlit.dataframe(fruits_to_show)
 
+#create tge repeatable code block(called as function)
+def get_fruityvice_date(this_fruit_choice):
+   fruityvice_response = requests.get("https://fruityvice.com/api/fruit/"+this_fruit_choice)
+   fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
+   return fruitvice_normalized
+
 
 #New section display fruitvice API reaponse
-
 streamlit.header("Fruityvice Fruit Advice!")
 try:
    fruit_choice = streamlit.text_input('What fruit would you like information about?')
    if not fruit_choice:
          streamlit.error('Please select a fruit to get information.')
    else:
-         fruityvice_response = requests.get("https://fruityvice.com/api/fruit/"+fruit_choice)
-         fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
-         streamlit.dataframe(fruityvice_normalized) 
+        back_from_function=get_fruity_vice_date(fruit_choice) 
+        streamlit.dataframe(back_from_function) 
 except URLError as e:
      streamlit.error()
 
